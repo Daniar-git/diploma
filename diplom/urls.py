@@ -23,6 +23,7 @@ urlpatterns = [
     path('', home_page),
     path('login/', admin.site.urls),
     path('accounts/', include('diplom.user.urls')),
+    path('main/', include('diplom.main.urls')),
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
 ]
 

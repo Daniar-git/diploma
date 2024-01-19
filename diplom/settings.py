@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'diplom.user',
+    'diplom.main',
     'microsoft_auth',
 ]
 
@@ -82,6 +83,7 @@ MICROSOFT_AUTH_CLIENT_SECRET = '2mC8Q~ZgMz9ptPJqTx~FNPKcZr2XZkMbvpqCFdoD'
 WSGI_APPLICATION = 'diplom.wsgi.application'
 
 MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
+AUTH_USER_MODEL = 'user.User'
 
 LOGIN_REDIRECT_URL = "check/"
 
@@ -90,11 +92,14 @@ LOGIN_REDIRECT_URL = "check/"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'diplom',
+        'USER': 'postgres',
+        'PASSWORD': '1000',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -147,5 +152,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     "logout_uri": "http://localhost:8000/admin/logout"
 # }
 #
-# LOGIN_URL = "/microsoft_authentication/login/"
-# LOGIN_REDIRECT_URL = "/admin"  # optional and can be changed to any other url
+LOGIN_URL = "login/"
+LOGIN_REDIRECT_URL = "accounts/profile/"  # optional and can be changed to any other url
