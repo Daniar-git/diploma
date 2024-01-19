@@ -1,0 +1,11 @@
+<!-- your_app/templates/petition_create.html -->
+{% extends 'home/index.html' %}
+
+{% block content %}
+  <h2>Create a Petition</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}

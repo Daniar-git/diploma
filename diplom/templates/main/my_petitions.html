@@ -1,0 +1,17 @@
+<!-- your_app/templates/my_petitions.html -->
+{% extends 'home/index.html' %}
+
+{% block content %}
+  <h2>My Petitions</h2>
+  {% if user_petitions %}
+    <ul>
+      {% for petition in user_petitions %}
+        <li>
+          <a href="{% url 'petition_detail' pk=petition.pk %}">{{ petition.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You haven't created any petitions yet.</p>
+  {% endif %}
+{% endblock %}

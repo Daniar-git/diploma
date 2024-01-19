@@ -1,0 +1,9 @@
+<!-- your_app/templates/petition_detail.html -->
+{% extends 'home/index.html' %}
+
+{% block content %}
+  <h2>{{ petition.title }}</h2>
+  <p>Created by: {{ petition.user.username }}</p>
+  <p>Description: {{ petition.description }}</p>
+  <!-- Add more details as needed -->
+{% endblock %}
