@@ -98,12 +98,11 @@ LOGIN_REDIRECT_URL = "check/"
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.environ.get('DATABASE_NAME', 'diplom'),
-#         'USER': os.environ.get('DATABASE_USER', 'postgres'),
-#         'PASSWORD': os.environ.get('DATABASE_PASSWORD', '1000'),
-#         'HOST': os.environ.get('DATABASE_HOST', '127.0.0.1'),
-#         'PORT': os.environ.get('DATABASE_PORT', '5432'),
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME', 'postgres'),
+#         'USER': os.getenv('DB_USER', 'postgres'),
+#         'HOST': os.getenv('DB_HOST', 'db'),
+#         'PORT': 5432,
 #     }
 # }
 
