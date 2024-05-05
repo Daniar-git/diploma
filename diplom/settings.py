@@ -159,15 +159,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# MICROSOFT = {
-#     "app_id": "7b05f33c-8e8f-4471-af1c-6ebdf3f8fe69",
-#     "app_secret": "f42cc142-e897-4dd8-abbb-c357ce6d74e4",
-#     "redirect": "http://localhost:8000/microsoft_authentication/callback",
-#     "scopes": ["user.read"],
-#     "authority": "https://login.microsoftonline.com/common",  # or using tenant "https://login.microsoftonline.com/{tenant}",
-#     "valid_email_domains": ["localhost"],
-#     "logout_uri": "http://localhost:8000/admin/logout"
-# }
-#
+MICROSOFT = {
+    "app_id": "7b05f33c-8e8f-4471-af1c-6ebdf3f8fe69",
+    "app_secret": "f42cc142-e897-4dd8-abbb-c357ce6d74e4",
+    "redirect": "https://diplom.aitu.lol/microsoft_authentication/callback",
+    "scopes": ["user.read"],
+    "authority": "https://login.microsoftonline.com/common",  # or using tenant "https://login.microsoftonline.com/{tenant}",
+    "valid_email_domains": ["localhost"],
+    "logout_uri": "https://diplom.aitu.loladmin/logout"
+}
+
 LOGIN_URL = "login/"
 LOGIN_REDIRECT_URL = "accounts/profile/"  # optional and can be changed to any other url
