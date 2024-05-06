@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
-from .forms import PetitionForm, LikesForm, DislikesForm, CommentForm
 from .models import *
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View
+from django.shortcuts import render, redirect
+from .forms import PetitionForm
 
 
-class PetitionCreateView(View):
+class PetitionCreateView(LoginRequiredMixin, View):
     template_name = 'main/petition_create.html'
+    login_url = '/login/'  # Update with your login URL
 
     def get(self, request):
         form = PetitionForm()
@@ -15,10 +18,11 @@ class PetitionCreateView(View):
         form = PetitionForm(request.POST)
         if form.is_valid():
             petition = form.save(commit=False)
-            petition.user = request.user  # Set the current user as the creator
+            petition.user = request.user
             petition.save()
-            return redirect('petition_list')  # Change 'petition_list' to your actual URL name for the list view
+            return redirect('petition_list')
         return render(request, self.template_name, {'form': form})
+
 
 
 class MyPetitionsView(View):

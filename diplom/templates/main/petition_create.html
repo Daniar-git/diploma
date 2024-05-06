@@ -1,11 +1,51 @@
-<!-- your_app/templates/petition_create.html -->
-{% extends 'home/index.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
-  <h2>Create a Petition</h2>
-  <form method="post">
+  <style>
+    .petition-form {
+      display: flex;
+      flex-direction: column;
+      width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .petition-form label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .petition-form input,
+    .petition-form textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-bottom: 15px;
+    }
+
+    .petition-form button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      /* Center the button horizontally */
+      margin: 0 auto;
+    }
+  </style>
+    <div>
+  <h1 style="text-align: center">Create a Petition</h1>
+  <form class="petition-form" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
+    <label for="title">Title of Petition:</label>
+    <input type="text" id="title" name="title">
+    <label for="description">Description of Petition:</label>
+    <textarea id="description" name="description" rows="5"></textarea>
+    <button type="submit">Submit Petition</button>
   </form>
+    </div>
 {% endblock %}
