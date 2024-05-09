@@ -1,20 +1,21 @@
-<!-- your_app/templates/my_petitions.html -->
 {% extends 'home/index.html' %}
 
 {% block content %}
-  <h2>My Petitions</h2>
+  <h2>All petitions:</h2>
   {% if user_petitions %}
+    <ul>
       {% for petition in user_petitions %}
-        <div class="Petition">
+          <div class="Petition">
             <p class="Username">{{ petition.user }}</p>
             <a href="{% url 'petition_detail' pk=petition.pk %}"><p class="Title">{{ petition.title }}</p></a>
             <p class="Description">{{ petition.description }}</p>
           </div>
       {% endfor %}
+    </ul>
   {% else %}
-    <p>You haven't created any petitions yet.</p>
+    <p>There is no petitions yet</p>
   {% endif %}
-        <style>
+    <style>
     .Petition {
       display: grid;  /* Use display: grid for the container */
       grid-template-columns: 1fr 2fr;  /* Two columns with a width ratio of 1:2 */

@@ -33,6 +33,14 @@ class MyPetitionsView(View):
         return render(request, self.template_name, {'user_petitions': user_petitions})
 
 
+class PetitionsView(View):
+    template_name = 'main/all_petitions.html'
+
+    def get(self, request):
+        user_petitions = Petition.objects.all().order_by('-created')
+        return render(request, self.template_name, {'user_petitions': user_petitions})
+
+
 class PetitionView(View):
     template_name = 'main/petition_detail.html'
 
