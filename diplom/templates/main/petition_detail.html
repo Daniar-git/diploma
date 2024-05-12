@@ -1,4 +1,3 @@
-<!-- your_app/templates/petition_detail.html -->
 {% extends 'home/index.html' %}
 
 {% block content %}
@@ -6,7 +5,33 @@
         <p class="Username">{{ petition.user }}</p>
         <a href="{% url 'petition_detail' pk=petition.pk %}"><p class="Title">{{ petition.title }}</p></a>
         <p class="Description">{{ petition.description }}</p>
-      </div>
+
+        <p>Likes: {{ likes_count }}</p>
+        <p>Dislikes: {{ dislikes_count }}</p>
+        <p>Comments:</p>
+        {% for comment in comments %}
+            <div>
+                <p>User: {{ comment.user }}</p>
+                <p>Text: {{ comment.text }}</p>
+            </div>
+        {% endfor %}
+        <form action="{% url 'like_petition' pk=petition.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Like</button>
+        </form>
+
+        <form action="{% url 'dislike_petition' pk=petition.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Dislike</button>
+        </form>
+
+            <form action="{% url 'comment_create' pk=petition.pk %}" method="post">
+            {% csrf_token %}
+            {{ comment_form.text }}
+            <button type="submit">Comment</button>
+        </form>
+    </div>
+
 <style>
     .Petition {
       display: grid;  /* Use display: grid for the container */
@@ -33,5 +58,5 @@
       text-decoration: none;
       color: #000;
     }
-    </style>
+</style>
 {% endblock %}

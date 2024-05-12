@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'diplom.user',
     'diplom.main',
     'microsoft_auth',
+    'rest_framework_tracking',
 ]
 
 SITE_ID = 1
@@ -96,26 +97,26 @@ LOGIN_REDIRECT_URL = "check/"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('DB_NAME', 'postgres'),
-#         'USER': os.getenv('DB_USER', 'postgres'),
-#         'HOST': os.getenv('DB_HOST', 'db'),
-#         'PORT': 5432,
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'diplom_db',
-        'USER': 'diplom_user',
-        'PASSWORD': '1000',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'postgres'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': 5432,
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'diplom_db',
+#         'USER': 'diplom_user',
+#         'PASSWORD': '1000',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
