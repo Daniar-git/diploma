@@ -22,7 +22,7 @@
             <div class="usermenu">
                 {% if user.is_authenticated %}
                         <span class="login">Logged in as</span>
-                    <a href="https://diplom.aitu.lol/user/profile/">
+                    <a href={% url 'profile' %}>
                         <span class="login">{{ user.username }}</span>
                     </a>
                 {% else %}

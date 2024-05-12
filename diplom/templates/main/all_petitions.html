@@ -9,6 +9,9 @@
             <p class="Username">{{ petition.user }}</p>
             <a href="{% url 'petition_detail' pk=petition.pk %}"><p class="Title">{{ petition.title }}</p></a>
             <p class="Description">{{ petition.description }}</p>
+            <p>Likes: {{ petition.like_count }}</p>
+            <p>DisLikes: {{ petition.dislike_count }}</p>
+            <p>Comments: {{ petition.comment_count}}</p>
           </div>
       {% endfor %}
     </ul>

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'diplom.user',
     'diplom.main',
     'microsoft_auth',
+    'rest_framework',
     'rest_framework_tracking',
 ]
 
@@ -107,16 +108,16 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'diplom_db',
-#         'USER': 'diplom_user',
-#         'PASSWORD': '1000',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'diplom_db',
+        'USER': 'diplom_user',
+        'PASSWORD': '1000',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

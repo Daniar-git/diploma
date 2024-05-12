@@ -3,5 +3,5 @@ from django.urls import path, include
 from diplom.user.views import profile
 
 urlpatterns = [
-    path('profile/', profile),
+    path('profile/', profile, name="profile"),
 ]

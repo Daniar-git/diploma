@@ -7,9 +7,10 @@ from django.core.serializers import serialize
 from rest_framework_tracking.mixins import LoggingMixin
 from django.views.generic import View
 from rest_framework import views
+from django.db.models import Count
 
 
-class PetitionCreateView(LoggingMixin, LoginRequiredMixin, View):
+class PetitionCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
     template_name = 'main/petition_create.html'
     login_url = '/login/'  # Update with your login URL
 
@@ -28,7 +29,7 @@ class PetitionCreateView(LoggingMixin, LoginRequiredMixin, View):
 
 
 
-class MyPetitionsView(LoggingMixin, LoginRequiredMixin, View):
+class MyPetitionsView(LoggingMixin, LoginRequiredMixin, views.APIView):
     template_name = 'main/my_petitions.html'
 
     def get(self, request):
@@ -40,11 +41,15 @@ class PetitionsView(LoggingMixin, views.APIView):
     template_name = 'main/all_petitions.html'
 
     def get(self, request):
-        user_petitions = Petition.objects.all().order_by('-created')
+        user_petitions = Petition.objects.annotate(
+            like_count=Count('likes'),
+            dislike_count=Count('dislikes'),
+            comment_count=Count('comment')
+        ).order_by('-created')
         return render(request, self.template_name, {'user_petitions': user_petitions})
 
 
-class PetitionView(LoggingMixin, View):
+class PetitionView(LoggingMixin, views.APIView):
     template_name = 'main/petition_detail.html'
 
     def get(self, request, pk):
@@ -56,7 +61,7 @@ class PetitionView(LoggingMixin, View):
                       {'petition': petition, 'likes_count': likes_count, 'dislikes_count': dislikes_count, 'comments': comments})
 
 
-class LikeView(LoggingMixin, LoginRequiredMixin, View):
+class LikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
     def post(self, request, pk):
         petition = get_object_or_404(Petition, pk=pk)
         like, created = Likes.objects.get_or_create(user=request.user, petition=petition)
@@ -65,7 +70,7 @@ class LikeView(LoggingMixin, LoginRequiredMixin, View):
         return redirect('petition_detail', pk=pk)
 
 
-class DislikeView(LoggingMixin, LoginRequiredMixin, View):
+class DislikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
     def post(self, request, pk):
         petition = get_object_or_404(Petition, pk=pk)
         dislike, created = Dislikes.objects.get_or_create(user=request.user, petition=petition)
@@ -74,7 +79,7 @@ class DislikeView(LoggingMixin, LoginRequiredMixin, View):
         return redirect('petition_detail', pk=pk)
 
 
-class CommentCreateView(LoggingMixin, LoginRequiredMixin, View):
+class CommentCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
     def post(self, request, pk):
         petition = get_object_or_404(Petition, pk=pk)
         comment_form = CommentForm(request.POST)  # Create an instance of CommentForm with form data
