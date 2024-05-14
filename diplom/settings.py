@@ -99,12 +99,22 @@ LOGIN_REDIRECT_URL = "check/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'postgres'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': 5432,
+    }
+}
+
+DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'diplom_db',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
+        'USER': 'diplom_user',
+        'PASSWORD': '1000',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
 
