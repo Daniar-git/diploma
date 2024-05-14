@@ -1,48 +1,54 @@
-{% extends 'home/index.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
-  <h2>All petitions:</h2>
-  {% if user_petitions %}
-    <ul>
-      {% for petition in user_petitions %}
-          <div class="Petition">
-            <p class="Username">{{ petition.user }}</p>
-            <a href="{% url 'petition_detail' pk=petition.pk %}"><p class="Title">{{ petition.title }}</p></a>
-            <p class="Description">{{ petition.description }}</p>
-            <p>Likes: {{ petition.like_count }}</p>
-            <p>DisLikes: {{ petition.dislike_count }}</p>
-            <p>Comments: {{ petition.comment_count}}</p>
-          </div>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>There is no petitions yet</p>
-  {% endif %}
-    <style>
-    .Petition {
-      display: grid;  /* Use display: grid for the container */
-      grid-template-columns: 1fr 2fr;  /* Two columns with a width ratio of 1:2 */
-      grid-template-rows: auto auto; /* Two rows with automatic height */
-      border: 1px solid #ddd;
-      margin-top: 1%;
-      width: 100%;
-    }
+    <h4>All petitions:</h4>
+    <form method="get" style="width: 50%; display: flex; gap: 1rem;">
+        <input class="form-control" type="text" name="q" placeholder="Search petitions...">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 
-    .Username, .Title {  /* Style username and title */
-      padding: 10px;
-      margin: 0;
-      border-bottom: 1px solid #ddd;  /* Add bottom border to resemble table cells */
-    }
-
-    .Description {  /* Style description */
-      grid-column: 1 / span 2;  /* Span across both columns */
-      padding: 10px;
-      margin: 0;
-    }
-
-    .Title a {  /* Remove underline from link */
-      text-decoration: none;
-      color: #000;
-    }
-    </style>
+    {% if user_petitions %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Likes</th>
+                <th scope="col">Dislikes</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Author</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for petition in user_petitions %}
+                <tr>
+                    <th scope="row">{{ petition.pk }}</th>
+                    <td><a href="{% url 'petition_detail' pk=petition.pk %}">{{ petition.title }}</a></td>
+                    <td>{{ petition.description }}</td>
+                    <td>{{ petition.like_count }}</td>
+                    <td>{{ petition.dislike_count }}</td>
+                    <td>{{ petition.comment_count }}</td>
+                    <td>{{ petition.user }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Likes</th>
+                <th scope="col">Dislikes</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Author</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}

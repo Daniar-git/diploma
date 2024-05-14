@@ -4,63 +4,56 @@
     <link rel="shortcut icon" href="https://moodle.astanait.edu.kz/theme/image.php/boost/theme/1677736259/favicon">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="keywords" content="moodle, Astana IT University">
-    <link rel="stylesheet" type="text/css" href="https://moodle.astanait.edu.kz/theme/yui_combo.php?rollup/3.17.2/yui-moodlesimple-min.css">
-    <script charset="utf-8" id="yui_3_17_2_1_1714976277347_8" src="https://moodle.astanait.edu.kz/theme/yui_combo.php?m/1677736260/core/event/event-min.js&amp;m/1677736260/filter_mathjaxloader/loader/loader-min.js" async=""></script><script charset="utf-8" id="yui_3_17_2_1_1714976277347_19" src="https://moodle.astanait.edu.kz/theme/yui_combo.php?3.17.2/event-mousewheel/event-mousewheel-min.js&amp;3.17.2/event-resize/event-resize-min.js&amp;3.17.2/event-hover/event-hover-min.js&amp;3.17.2/event-touch/event-touch-min.js&amp;3.17.2/event-move/event-move-min.js&amp;3.17.2/event-flick/event-flick-min.js&amp;3.17.2/event-valuechange/event-valuechange-min.js&amp;3.17.2/event-tap/event-tap-min.js" async=""></script><script id="firstthemesheet" type="text/css">/** Required in order to fix style inclusion problems in IE with YUI **/</script><link rel="stylesheet" type="text/css" href="https://moodle.astanait.edu.kz/theme/styles.php/boost/1677736259_1584177879/all">
-</head>
-<body>
 
-<nav class="fixed-top navbar navbar-light bg-white navbar-expand moodle-has-zindex" aria-label="Навигация по сайту">
-    <a href="https://diplom.aitu.lol/" class="navbar-brand aabtn d-none d-sm-inline">
-        <span class="site-name d-none d-md-inline">Diplom Astana IT University</span>
-    </a>
-    <div class="ml-auto">
-    </div>
-    <ul class="nav navbar-nav usernav">
-        <li class="nav-item">
-        </li>
-        <li class="nav-item align-items-center pl-2">
-            <div class="usermenu">
-                {% if user.is_authenticated %}
-                        <span class="login">Logged in as</span>
+    {#   Bootstrap CDN   #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    {#    Google Fonts (Montseratt)    #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+          rel="stylesheet">
+</head>
+<body style="height:140vh; font-family: 'Montserrat', sans-serif; font-size:1rem; font-style:normal"
+    class="px-5"
+>
+
+<nav class="navbar navbar-light bg-light sticky-top py-2 px-2 mb-4 mt-2" style="border-radius: 20px; max-width:1200px; margin:0 auto;" aria-label="Навигация по сайту">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img height="50"
+                 src="https://moodle.astanait.edu.kz/pluginfile.php/1/core_admin/logo/0x150/1677736259/Astana%20IT%20University%20%284%29.png"
+                 alt="Логотип Astana IT University"/>
+            Diplom Astana IT University
+        </a>
+
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="login">Hello</span>
                     <a href={% url 'profile' %}>
                         <span class="login">{{ user.username }}</span>
                     </a>
-                {% else %}
-                    <span class="login">Вы не вошли в систему (<a href="https://diplom.aitu.lol/login">Вход</a>)</span>
-                {% endif %}
-            </div>
-        </li>
-    </ul>
+                </li>
+            {% else %}
+                <li>
+                <span class="login">Вы не вошли в систему (<a
+                        href="/login">Вход</a>)</span>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
 </nav>
 
-<div id="page" class="container-fluid d-print-block">
-    <header id="page-header" class="row">
-        <div class="col-12 pt-3 pb-3">
-            <div class="card ">
-                <div class="card-body ">
-                    <div class="d-sm-flex align-items-center">
-                        <div class="mr-auto">
-                            <div class="logo">
-                                <img src="https://moodle.astanait.edu.kz/pluginfile.php/1/core_admin/logo/0x150/1677736259/Astana%20IT%20University%20%284%29.png" alt="Логотип Astana IT University" class="img-fluid">
-                            </div>
-                            <h1 class="sr-only">Astana IT University</h1>
-                        </div>
-                        <div class="header-actions-container flex-shrink-0" data-region="header-actions-container">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-wrap">
-                        <div class="ml-auto d-flex">
-                        </div>
-                        <div id="course-header">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    {%block content%}
+<main id="page" class="px-5" style="max-width:1200px; margin:0 auto;">
+    {% block content %}
     {% endblock %}
-</div>
-<div id="yui3-css-stamp" style="position: absolute !important; visibility: hidden !important" class=""></div>
+</main>
+
+{#   Bootstrap CDN   #}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

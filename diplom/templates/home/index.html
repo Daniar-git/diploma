@@ -1,28 +1,29 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <section id="inst12363" class="block_activity_modules block list_block  card mb-3" role="navigation" data-block="activity_modules" aria-labelledby="instance-12363-header">
-        <div class="card-body p-3">
-            <a href={% url 'petitions' %}>
-                <h5 id="instance-12363-header" class="card-title d-inline">
-                    Дискуссии
-                </h5>
-            </a>
-            <div class="card-text content mt-3">
-                <ul class="unlist">
-                    <li class="r0">
-                        <div class="column c1">
-                            <a href={% url 'petitions' %}>
-                                <img class="icon" alt="Форум" title="Дискусии" src="https://moodle.astanait.edu.kz/theme/image.php/boost/forum/1677736259/icon">
-                                Дискусии
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-                <div class="footer">
-                    <a href={% url 'petition_create' %}>Создать петицию</a>
-                </div>
-            </div>
-        </div>
+    <section style="display:flex; gap: 1rem; flex-wrap: wrap;">
+        <a class="custom-card" href={% url 'petitions' %}>
+            <img class="icon" alt="Форум" title="Дискусии"
+                 src="https://moodle.astanait.edu.kz/theme/image.php/boost/forum/1677736259/icon">
+            Discussions
+        </a>
+        <a href={% url 'petition_create' %} class="custom-card">
+            Создать петицию
+        </a>
     </section>
+
+    <style>
+        .custom-card {
+            text-decoration: none;
+            cursor: pointer;
+            flex: 1;
+            color: black;
+            padding: 2rem 2rem;
+            font-size: 1.2rem;
+            min-width: 300px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #888888;
+        }
+    </style>
 {% endblock %}
