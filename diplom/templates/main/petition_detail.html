@@ -1,62 +1,44 @@
-{% extends 'home/index.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
-    <div class="Petition">
-        <p class="Username">{{ petition.user }}</p>
-        <a href="{% url 'petition_detail' pk=petition.pk %}"><p class="Title">{{ petition.title }}</p></a>
-        <p class="Description">{{ petition.description }}</p>
+    <a href="/main/petitions/all/">
+        ← Back to petitions
+    </a>
+    <h3>{{ petition.title }}</h3>
 
-        <p>Likes: {{ likes_count }}</p>
-        <p>Dislikes: {{ dislikes_count }}</p>
-        <p>Comments:</p>
-        {% for comment in comments %}
-            <div>
-                <p>User: {{ comment.user }}</p>
-                <p>Text: {{ comment.text }}</p>
-            </div>
-        {% endfor %}
+    <p class="Username"><span class="badge bg-primary">author</span> {{ petition.user }}</p>
+    <h4>Description</h4>
+    <p class="Description">{{ petition.description }}</p>
+    <div style="display:flex; gap:1rem">
         <form action="{% url 'like_petition' pk=petition.pk %}" method="post">
             {% csrf_token %}
-            <button type="submit">Like</button>
+            <button type="submit" class="btn btn-light">👍 {{ likes_count }}</button>
         </form>
-
         <form action="{% url 'dislike_petition' pk=petition.pk %}" method="post">
             {% csrf_token %}
-            <button type="submit">Dislike</button>
-        </form>
-
-            <form action="{% url 'comment_create' pk=petition.pk %}" method="post">
-            {% csrf_token %}
-            {{ comment_form.text }}
-            <button type="submit">Comment</button>
+            <button type="submit" class="btn btn-light">👎 {{ dislikes_count }}</button>
         </form>
     </div>
+    <form action="{% url 'comment_create' pk=petition.pk %}" method="post"
+          style="display: flex; flex-direction: column; gap:1rem">
+        {% csrf_token %}
+        {{ comment_form.text }}
+        <button type="submit" class="btn btn-primary" style="width: fit-content;">Comment</button>
+    </form>
 
-<style>
-    .Petition {
-      display: grid;  /* Use display: grid for the container */
-      grid-template-columns: 1fr 2fr;  /* Two columns with a width ratio of 1:2 */
-      grid-template-rows: auto auto; /* Two rows with automatic height */
-      border: 1px solid #ddd;
-      margin-top: 1%;
-      width: 100%;
-    }
+    <h5>Comments:</h5>
 
-    .Username, .Title {  /* Style username and title */
-      padding: 10px;
-      margin: 0;
-      border-bottom: 1px solid #ddd;  /* Add bottom border to resemble table cells */
-    }
+    {% for comment in comments %}
+        <div class="card" style="margin: 1rem 0; border-radius: 10px;">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">
+                    <img src="https://i.pravatar.cc/50" href="Avatar"
+                         style="border-radius: 50px; object-fit: cover; width: 40px; aspect-ratio: 1/1;"/>
+                    {{ comment.user }}
+                </h6>
+                <p class="card-text">{{ comment.text }}</p>
+            </div>
+        </div>
+    {% endfor %}
 
-    .Description {  /* Style description */
-      grid-column: 1 / span 2;  /* Span across both columns */
-      padding: 10px;
-      margin: 0;
-    }
-
-    .Title a {  /* Remove underline from link */
-      text-decoration: none;
-      color: #000;
-    }
-</style>
 {% endblock %}
