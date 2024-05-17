@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'diplom.login_redirect.CustomRedirectMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -172,7 +173,7 @@ MICROSOFT = {
 }
 
 LOGIN_URL = "login/"
-LOGIN_REDIRECT_URL = ""
+LOGIN_REDIRECT_URL = "/"
 
 RECAPTCHA_PUBLIC_KEY = '6Lcfu98pAAAAANOl2NKF3U94MPqYStn2qqaOG_2y'
 RECAPTCHA_PRIVATE_KEY = '6Lcfu98pAAAAAD0066sEBrE3VQeDkvRlljBqLwsA'
