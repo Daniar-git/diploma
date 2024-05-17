@@ -12,7 +12,7 @@ class CustomRedirectMiddleware:
         if request.user.is_authenticated:
             login_url = "https://diplom.aitu.lol/login/"
             if request.path == login_url:
-                next_url = request.GET.get('next', 'https://diplom.aitu.lol')
+                next_url = 'https://diplom.aitu.lol'
                 return redirect(next_url)
 
         return response
