@@ -10,7 +10,9 @@ class CustomRedirectMiddleware:
         response = self.get_response(request)
 
         if request.user.is_authenticated:
-            if request.path == reverse('login:index'):
-                return redirect('https://diplom.aitu.lol')
+            login_url = reverse('login')
+            if request.path == login_url:
+                next_url = request.GET.get('next', 'https://diplom.aitu.lol')
+                return redirect(next_url)
 
         return response
