@@ -21,7 +21,7 @@ from diplom.user.views import home_page
 
 urlpatterns = [
     path('', home_page),
-    path('login/', admin.site.urls, name='login'),
+    path('login/', admin.site.urls),
     path('user/', include('diplom.user.urls')),
     path('main/', include('diplom.main.urls')),
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
