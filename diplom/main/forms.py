@@ -1,12 +1,16 @@
 # your_app/forms.py
 from django import forms
 from .models import Petition, Likes, Dislikes, Comment
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
 
 class PetitionForm(forms.ModelForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+
     class Meta:
         model = Petition
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'captcha']
 
 
 class LikesForm(forms.ModelForm):

@@ -1,6 +1,10 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+    <ol class="breadcrumb" style="margin-top:-1rem">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/main/petitions/my/">My Petitions</a></li>
+    </ol>
     <h4>All petitions:</h4>
     <form method="get" style="width: 50%; display: flex; gap: 1rem;">
         <input class="form-control" type="text" name="q" placeholder="Search petitions...">

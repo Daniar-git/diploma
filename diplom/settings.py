@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'microsoft_auth',
     'rest_framework',
     'rest_framework_tracking',
+    'django_recaptcha'
 ]
 
 SITE_ID = 1
@@ -171,4 +172,7 @@ MICROSOFT = {
 }
 
 LOGIN_URL = "login/"
-LOGIN_REDIRECT_URL = "accounts/profile/"  # optional and can be changed to any other url
+LOGIN_REDIRECT_URL = ""
+
+RECAPTCHA_PUBLIC_KEY = '6Lcfu98pAAAAANOl2NKF3U94MPqYStn2qqaOG_2y'
+RECAPTCHA_PRIVATE_KEY = '6Lcfu98pAAAAAD0066sEBrE3VQeDkvRlljBqLwsA'

@@ -33,19 +33,19 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      /* Center the button horizontally */
       margin: 0 auto;
     }
   </style>
-    <div>
-  <h2 style="text-align: center">Create a Petition</h2>
-  <form class="petition-form" method="post">
-    {% csrf_token %}
-    <label for="title">Title of Petition:</label>
-    <input type="text" id="title" name="title">
-    <label for="description">Description of Petition:</label>
-    <textarea id="description" name="description" rows="5"></textarea>
-    <button type="submit">Submit Petition</button>
-  </form>
-    </div>
+  <ol class="breadcrumb" style="margin-top:-1rem">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/main/petitions/my/">My Petitions</a></li>
+  </ol>
+  <div>
+    <h2 style="text-align: center">Create a Petition</h2>
+    <form class="petition-form" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit Petition</button>
+    </form>
+  </div>
 {% endblock %}

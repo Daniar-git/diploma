@@ -8,6 +8,38 @@ from rest_framework_tracking.mixins import LoggingMixin
 from django.views.generic import View
 from rest_framework import views
 from django.db.models import Count
+# from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
+
+
+from functools import wraps
+
+from django.conf import settings
+from django.utils.module_loading import import_string
+
+from django_ratelimit.exceptions import Ratelimited
+from django_ratelimit.core import is_ratelimited
+
+
+ALL = (None,)
+
+
+def ratelimit(group=None, key=None, rate=None, method=ALL, block=True):
+    def decorator(fn):
+        @wraps(fn)
+        def _wrapped(request, *args, **kw):
+            old_limited = getattr(request, 'limited', False)
+            ratelimited = is_ratelimited(request=request, group=group, fn=fn,
+                                         key=key, rate=rate, method=method,
+                                         increment=True)
+            request.limited = ratelimited or old_limited
+            if ratelimited and block:
+                cls = getattr(
+                    settings, 'RATELIMIT_EXCEPTION_CLASS', Ratelimited)
+                return redirect('error_page')
+            return fn(request, *args, **kw)
+        return _wrapped
+    return decorator
 
 
 class PetitionCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
@@ -18,6 +50,7 @@ class PetitionCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
         form = PetitionForm()
         return render(request, self.template_name, {'form': form})
 
+    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST'), name='dispatch')
     def post(self, request):
         form = PetitionForm(request.POST)
         if form.is_valid():
@@ -26,7 +59,6 @@ class PetitionCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
             petition.save()
             return redirect('petition_list')
         return render(request, self.template_name, {'form': form})
-
 
 
 class MyPetitionsView(LoggingMixin, LoginRequiredMixin, views.APIView):
@@ -62,6 +94,8 @@ class PetitionView(LoggingMixin, views.APIView):
 
 
 class LikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
+
+    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST'), name='dispatch')
     def post(self, request, pk):
         petition = get_object_or_404(Petition, pk=pk)
         like, created = Likes.objects.get_or_create(user=request.user, petition=petition)
@@ -71,6 +105,8 @@ class LikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
 
 
 class DislikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
+
+    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST'), name='dispatch')
     def post(self, request, pk):
         petition = get_object_or_404(Petition, pk=pk)
         dislike, created = Dislikes.objects.get_or_create(user=request.user, petition=petition)
@@ -79,7 +115,10 @@ class DislikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
         return redirect('petition_detail', pk=pk)
 
 
+# @ratelimit(key='ip', rate='5/m')
 class CommentCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
+
+    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST'), name='dispatch')
     def post(self, request, pk):
         petition = get_object_or_404(Petition, pk=pk)
         comment_form = CommentForm(request.POST)  # Create an instance of CommentForm with form data

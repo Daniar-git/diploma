@@ -10,3 +10,7 @@ def profile(request):
 
 def home_page(request):
     return render(request, 'home/index.html')
+
+
+def error_page(request):
+    return render(request, 'home/error_page.html')
