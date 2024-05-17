@@ -7,6 +7,6 @@ class LoginRedirectMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        if request.user.is_authenticated and 'next' in request.GET:
+        if 'next' in request.GET:
             return redirect("https://diplom.aitu.lol/")
         return response
