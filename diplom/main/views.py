@@ -69,15 +69,23 @@ class MyPetitionsView(LoggingMixin, LoginRequiredMixin, views.APIView):
         return render(request, self.template_name, {'user_petitions': user_petitions})
 
 
-class PetitionsView(LoggingMixin, views.APIView):
+class PetitionsView(views.APIView):
     template_name = 'main/all_petitions.html'
 
     def get(self, request):
-        user_petitions = Petition.objects.annotate(
-            like_count=Count('likes'),
-            dislike_count=Count('dislikes'),
-            comment_count=Count('comment')
-        ).order_by('-created')
+        query = request.GET.get('q')
+        if query:
+            user_petitions = Petition.objects.filter(title__icontains=query).annotate(
+                like_count=Count('likes'),
+                dislike_count=Count('dislikes'),
+                comment_count=Count('comment')
+            ).order_by('-created')
+        else:
+            user_petitions = Petition.objects.annotate(
+                like_count=Count('likes'),
+                dislike_count=Count('dislikes'),
+                comment_count=Count('comment')
+            ).order_by('-created')
         return render(request, self.template_name, {'user_petitions': user_petitions})
 
 
