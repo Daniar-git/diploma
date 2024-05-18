@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <section style="display:flex; gap: 1rem; flex-wrap: wrap;">
+    <section style="display:flex; gap: 1rem; flex-wrap: wrap; margin-top: 50px">
         <a class="custom-card" href={% url 'petitions' %}>
             <img class="icon" alt="Форум" title="Дискусии"
                  src="https://moodle.astanait.edu.kz/theme/image.php/boost/forum/1677736259/icon">
@@ -10,6 +10,9 @@
         <a href={% url 'petition_create' %} class="custom-card">
             Создать петицию
         </a>
+        <h5 style="text-align:center; margin-top: 20px">
+            Our platform is designed to promote the initiatives of our students. Thanks to online petitions, you can collectively discuss in the comments and try to solve some urgent problem of the university.
+        </h5>
     </section>
 
     <style>
