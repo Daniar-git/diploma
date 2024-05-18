@@ -32,9 +32,13 @@
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <span class="login">Hello</span>
+                    <span class="login">Вошли как</span>
                     <a href={% url 'profile' %}>
                         <span class="login">{{ user.username }}</span>
+                    </a>
+                    |
+                    <a href="{% url 'logout' %}">
+                        <span>Выйти</span>
                     </a>
                 </li>
             {% else %}

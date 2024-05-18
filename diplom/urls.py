@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 from diplom.user.views import home_page
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', home_page),
     path('login/', admin.site.urls),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('user/', include('diplom.user.urls')),
     path('main/', include('diplom.main.urls')),
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
