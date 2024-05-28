@@ -44,7 +44,7 @@ def ratelimit(group=None, key=None, rate=None, method=ALL, block=True):
 
 class PetitionCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
     template_name = 'main/petition_create.html'
-    login_url = '/login/'  # Update with your login URL
+    login_url = '/login/'
 
     def get(self, request):
         form = PetitionForm()
@@ -76,15 +76,15 @@ class PetitionsView(views.APIView):
         query = request.GET.get('q')
         if query:
             user_petitions = Petition.objects.filter(title__icontains=query).annotate(
-                like_count=Count('likes'),
-                dislike_count=Count('dislikes'),
-                comment_count=Count('comment')
+                like_count=Count('likes', distinct=True),
+                dislike_count=Count('dislikes', distinct=True),
+                comment_count=Count('comment', distinct=True)
             ).order_by('-created')
         else:
             user_petitions = Petition.objects.annotate(
-                like_count=Count('likes'),
-                dislike_count=Count('dislikes'),
-                comment_count=Count('comment')
+                like_count=Count('likes', distinct=True),
+                dislike_count=Count('dislikes', distinct=True),
+                comment_count=Count('comment', distinct=True)
             ).order_by('-created')
         return render(request, self.template_name, {'user_petitions': user_petitions})
 
