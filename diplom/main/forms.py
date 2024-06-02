@@ -11,7 +11,7 @@ def sanitize_input(user_input):
     pattern = re.compile(r'[{}=]')
 
     if pattern.search(user_input):
-        raise ValidationError("Input contains prohibited characters: '{', '}', '='")
+        raise ValidationError("Input contains prohibited characters: {} or =")
 
     return user_input
 
