@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 
 
 def sanitize_input(user_input):
-    pattern = re.compile(r'[{}]')
+    pattern = re.compile(r'[{}=]')
 
     if pattern.search(user_input):
         raise ValidationError("Input contains prohibited characters: {}")
