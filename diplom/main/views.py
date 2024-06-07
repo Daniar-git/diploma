@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -24,7 +26,7 @@ from django_ratelimit.core import is_ratelimited
 ALL = (None,)
 
 
-def ratelimit(group=None, key=None, rate=None, method=ALL, block=True):
+def ratelimit(group=None, key=None, rate=None, method=ALL, block=True, view_name=''):
     def decorator(fn):
         @wraps(fn)
         def _wrapped(request, *args, **kw):
@@ -36,7 +38,7 @@ def ratelimit(group=None, key=None, rate=None, method=ALL, block=True):
             if ratelimited and block:
                 cls = getattr(
                     settings, 'RATELIMIT_EXCEPTION_CLASS', Ratelimited)
-                return redirect('error_page')
+                return render(request, 'home/error_page.html', {'message': f'RATELIMIT EXCEEDED! You cannot {view_name} more than 1 time in 1 minute'})
             return fn(request, *args, **kw)
         return _wrapped
     return decorator
@@ -50,7 +52,7 @@ class PetitionCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
         form = PetitionForm()
         return render(request, self.template_name, {'form': form})
 
-    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST'), name='dispatch')
+    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST', view_name='Create petition'), name='dispatch')
     def post(self, request):
         form = PetitionForm(request.POST)
         if form.is_valid():
@@ -93,7 +95,10 @@ class PetitionView(LoggingMixin, views.APIView):
     template_name = 'main/petition_detail.html'
 
     def get(self, request, pk):
-        petition = get_object_or_404(Petition, pk=pk)
+        petition = Petition.objects.filter(pk=pk).first()
+        if not petition:
+            return render(request, 'home/error_page.html', {'message': f'There is no petition with that ID {pk}.'})
+
         likes_count = Likes.objects.filter(petition=petition).count()
         dislikes_count = Dislikes.objects.filter(petition=petition).count()
         comments = Comment.objects.filter(petition=petition).order_by('-created')
@@ -103,9 +108,16 @@ class PetitionView(LoggingMixin, views.APIView):
 
 class LikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
 
-    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST'), name='dispatch')
+    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST', view_name='Like petition'), name='dispatch')
     def post(self, request, pk):
-        petition = get_object_or_404(Petition, pk=pk)
+        petition = Petition.objects.filter(pk=pk).first()
+
+        if not petition:
+            return render(request, 'home/error_page.html', {'message': f'There is no petition with that ID {pk}.'})
+
+        if Dislikes.objects.filter(user=request.user, petition=petition).exists():
+            return render(request, 'home/error_page.html', {'message': 'Cannot like and dislike at the same time.'})
+
         like, created = Likes.objects.get_or_create(user=request.user, petition=petition)
         if not created:
             like.delete()
@@ -114,9 +126,16 @@ class LikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
 
 class DislikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
 
-    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST'), name='dispatch')
+    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST', view_name='Dislike petition'), name='dispatch')
     def post(self, request, pk):
-        petition = get_object_or_404(Petition, pk=pk)
+        petition = Petition.objects.filter(pk=pk).first()
+
+        if not petition:
+            return render(request, 'home/error_page.html', {'message': f'There is no petition with that ID {pk}.'})
+
+        if Likes.objects.filter(user=request.user, petition=petition).exists():
+            return render(request, 'home/error_page.html', {'message': 'Cannot like and dislike at the same time.'})
+
         dislike, created = Dislikes.objects.get_or_create(user=request.user, petition=petition)
         if not created:
             dislike.delete()
@@ -126,9 +145,12 @@ class DislikeView(LoggingMixin, LoginRequiredMixin, views.APIView):
 # @ratelimit(key='ip', rate='5/m')
 class CommentCreateView(LoggingMixin, LoginRequiredMixin, views.APIView):
 
-    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST'), name='dispatch')
+    @method_decorator(ratelimit(key='ip', rate='1/m', method='POST', view_name='Comment petition'), name='dispatch')
     def post(self, request, pk):
-        petition = get_object_or_404(Petition, pk=pk)
+        petition = Petition.objects.filter(pk=pk).first()
+        if not petition:
+            return render(request, 'home/error_page.html', {'message': f'There is no petition with that ID {pk}.'})
+
         comment_form = CommentForm(request.POST)  # Create an instance of CommentForm with form data
         if comment_form.is_valid():
             text = comment_form.cleaned_data['text']  # Get the 'text' field value from the form
